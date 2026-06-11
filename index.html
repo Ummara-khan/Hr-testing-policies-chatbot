@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RAG Chatbot</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            align-items: center;
+        }
+
+        .chat-box {
+            width: 500px;
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #chat {
+            height: 350px;
+            overflow-y: auto;
+            border: 1px solid #334155;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 80%;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px;
+            width: 18%;
+        }
+
+        .msg {
+            margin: 5px 0;
+        }
+
+        .user { color: #38bdf8; }
+        .bot { color: #34d399; }
+    </style>
+</head>
+<body>
+
+<div class="chat-box">
+    <h2>RAG Chatbot</h2>
+
+    <div id="chat"></div>
+
+    <input id="msg" placeholder="Ask something..." />
+    <button onclick="sendMsg()">Send</button>
+</div>
+
+<script>
+async function sendMsg() {
+    const input = document.getElementById("msg");
+    const chat = document.getElementById("chat");
+
+    const text = input.value;
+    if (!text) return;
+
+    chat.innerHTML += `<div class="msg user">You: ${text}</div>`;
+    input.value = "";
+
+    const res = await fetch("/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: text })
+    });
+
+    const data = await res.json();
+
+    chat.innerHTML += `<div class="msg bot">Bot: ${data.answer}</div>`;
+    chat.scrollTop = chat.scrollHeight;
+}
+</script>
+
+</body>
+</html>
