@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-API_URL = "https://showed-tickets-recommendations-gis.trycloudflare.com/query"
+API_URL = "http://127.0.0.1:6000/query"
 
 # -------------------------
 # PAGE CONFIG
